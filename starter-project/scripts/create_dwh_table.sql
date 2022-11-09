@@ -1,7 +1,7 @@
 -- create TIME_DIMENSION table
-drop table if exists starter_project.TIME_DIMENSION;
+drop table if exists dwh.TIME_DIMENSION;
 
-CREATE TABLE starter_project.TIME_DIMENSION(
+CREATE TABLE dwh.TIME_DIMENSION(
     Day_Key numeric,
     Actual_Date DATE,
     Day_Of_Month numeric(2),
@@ -12,13 +12,13 @@ CONSTRAINT Which_Quarter CHECK (Quarter in (1,2,3,4))
 );
 
 --use ALTER TABLE command to define the PK of TIME_DIMENSION
-ALTER TABLE starter_project.TIME_DIMENSION
-ADD CONSTRAINT TIME_DIMENSION_PK PRIMARY KEY (Day_Key) serial;
+ALTER TABLE dwh.TIME_DIMENSION
+ADD CONSTRAINT TIME_DIMENSION_PK PRIMARY KEY (Day_Key);
 
 -- create EMPLOYEE_DIMENSION table
-drop table if exists starter_project.EMPLOYEE_DIMENSION;
+drop table if exists dwh.EMPLOYEE_DIMENSION;
 
-CREATE TABLE starter_project.EMPLOYEE_DIMENSION(
+CREATE TABLE dwh.EMPLOYEE_DIMENSION(
  	emp_key serial,
  	employee_id numeric(4),
     first_name varchar(15),
@@ -34,13 +34,13 @@ CREATE TABLE starter_project.EMPLOYEE_DIMENSION(
 );
 
 --use ALTER TABLE command to define the PK of EMPLOYEE_DIMENSION
-ALTER TABLE starter_project.EMPLOYEE_DIMENSION
+ALTER TABLE dwh.EMPLOYEE_DIMENSION
 ADD CONSTRAINT EMPLOYEE_DIMENSION_PK PRIMARY KEY (emp_key);
 
 -- create CUSTOMER_DIMENSION table
-drop table if exists starter_project.CUSTOMER_DIMENSION;
+drop table if exists dwh.CUSTOMER_DIMENSION;
 
-CREATE TABLE starter_project.CUSTOMER_DIMENSION(
+CREATE TABLE dwh.CUSTOMER_DIMENSION(
  	cust_key serial,
  	customer_id numeric(6),
  	name varchar(45),
@@ -56,14 +56,14 @@ CREATE TABLE starter_project.CUSTOMER_DIMENSION(
 
 
 --use ALTER TABLE command to define the PK of CUSTOMER_DIMENSION
-ALTER TABLE starter_project.CUSTOMER_DIMENSION
+ALTER TABLE dwh.CUSTOMER_DIMENSION
 ADD CONSTRAINT CUSTOMER_DIMENSION_PK PRIMARY KEY (cust_key);
 
 
 -- create PRODUCT_DIMENSION table
-drop table if exists starter_project.product_dimension;
+drop table if exists dwh.product_dimension;
 
-CREATE TABLE starter_project.product_dimension
+CREATE TABLE dwh.product_dimension
 (
   	prod_key serial,
   	product_id numeric (6),
@@ -78,13 +78,13 @@ CREATE TABLE starter_project.product_dimension
 );
 
 -- use ALTER TABLE command to define the PK of PRODUCT_DIMENSION
-ALTER TABLE starter_project.product_dimension
+ALTER TABLE dwh.product_dimension
 ADD CONSTRAINT prod_dimension_PK PRIMARY KEY (prod_key);
 
 -- create SALES_FACT table
-drop table if exists starter_project.sales_fact;
+drop table if exists dwh.sales_fact;
 
-CREATE TABLE starter_project.sales_fact
+CREATE TABLE dwh.sales_fact
 (
   	orderdate_key int,
   	prod_key int,
@@ -95,23 +95,23 @@ CREATE TABLE starter_project.sales_fact
 );
 
 -- use ALTER TABLE command to define the PK of SALES_FACT
-ALTER TABLE starter_project.sales_fact
+ALTER TABLE dwh.sales_fact
 ADD CONSTRAINT sales_fact_PK PRIMARY KEY (orderdate_key, prod_key, cust_key, emp_key);
 
 -- use ALTER TABLE command to set each foreign key 
 -- from dimension tables to the sales_fact table
-ALTER TABLE starter_project.sales_fact
+ALTER TABLE dwh.sales_fact
     ADD CONSTRAINT sales_fact_FK1 FOREIGN KEY (orderdate_key) 
-    REFERENCES starter_project.time_dimension (day_key);
+    REFERENCES dwh.time_dimension (day_key);
 
-ALTER TABLE starter_project.sales_fact
+ALTER TABLE dwh.sales_fact
     ADD CONSTRAINT sales_fact_FK2 FOREIGN KEY (prod_key) 
-    REFERENCES starter_project.product_dimension(prod_key);
+    REFERENCES dwh.product_dimension(prod_key);
 
-ALTER TABLE starter_project.sales_fact
+ALTER TABLE dwh.sales_fact
     ADD CONSTRAINT sales_fact_FK3 FOREIGN KEY (cust_key) 
-    REFERENCES starter_project.Customer_dimension (cust_key);
+    REFERENCES dwh.Customer_dimension (cust_key);
 
-ALTER TABLE starter_project.sales_fact
+ALTER TABLE dwh.sales_fact
     ADD CONSTRAINT sales_fact_FK4 FOREIGN KEY (emp_key)
-    REFERENCES starter_project.Employee_dimension (emp_key);
+    REFERENCES dwh.Employee_dimension (emp_key);

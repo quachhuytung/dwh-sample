@@ -1,4 +1,4 @@
-insert into starter_project.customer_dimension(
+insert into dwh.customer_dimension(
 	customer_id,
 	name,
 	address,
@@ -6,7 +6,7 @@ insert into starter_project.customer_dimension(
 	state,
 	zip_code,
 	area_code,
-	phone_numeric,
+	phone_number,
 	credit_limit,
 	comments
 )
@@ -22,7 +22,7 @@ select
 	src.CREDIT_LIMIT,
 	src.COMMENTS
 from
-  starter_project.customer as src
-left join starter_project.customer_dimension as target on src.customer_id = target.customer_id
+  oltp.customer as src
+left join dwh.customer_dimension as target on src.customer_id = target.customer_id
 where target.customer_id is null
 ;
